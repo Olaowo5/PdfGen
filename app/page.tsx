@@ -24,7 +24,7 @@ export default function Home() {
           Create PDF using React-PDF-renderer
         </Link>
         <Link
-          href='/view-pdf-react-rend'
+          href='/view-pdf-react-rendola'
           className='border border-slate-800 px-3 py-2 hover:bg-slate-50 font-medium text-sm sm:text-lg'
         >
           Create PDF  Ola Custom
