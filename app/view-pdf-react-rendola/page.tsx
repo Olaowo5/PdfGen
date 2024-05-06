@@ -10,7 +10,8 @@ import {
   PDFDownloadLink,
 } from "@react-pdf/renderer";
 
-// Create styles
+// Create styles for the pdf
+/*
 const styles = StyleSheet.create({
   page: {
     padding: "12px",
@@ -33,7 +34,55 @@ const styles = StyleSheet.create({
 
   
 });
+*/
 
+const styles = StyleSheet.create({
+  page: {
+    padding: 12,
+  },
+  header: {
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  headerMain: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  headerSub: {
+    fontSize: 12,
+  },
+  section: {
+    marginBottom: 10,
+    /*
+    display: "flex",
+    flexDirection: "column",
+    gap: "2px",
+    margin: 5,
+    padding: 2,
+    flexGrow: 1,*/
+  },
+  sectionHeader: {
+    color: '#1155CC',
+   fontWeight: 900,
+    fontSize: 15,
+    marginBottom: 0,
+    paddingBottom: 0,
+  },
+  sectionDivider: {
+    marginTop:0.2,
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,
+    marginBottom: 5,
+  },
+  category: {
+    fontWeight: 'bold',
+    fontSize: 11,
+  },
+  content: {
+    fontSize: 10,
+    fontStyle: "Nunito",
+  },
+});
 // Create Document Component
 const PDFView = ({
   fullname,
@@ -51,7 +100,8 @@ const PDFView = ({
   exp: string,
   edu:string
  
-}) => (
+}) => {
+  /*
   <Document>
     <Page size='A4' style={styles.page}>
       <View style={styles.section}>
@@ -63,8 +113,51 @@ const PDFView = ({
         <Text>Experience: {exp}</Text>
       </View>
     </Page>
+  </Document>*/
+  
+  // Split the skills into lines
+  const formattedSkills = skills.split("\n").map((skill, index) => {
+    // Split each line into category and technologies
+    const [category, technologies] = skill.split(":");
+    // Apply bold styling to the category text
+    const formattedCategory = <Text style={{ fontWeight: 'bold' }}>{category}</Text>;
+    // Combine category and technologies with proper formatting
+    return (
+      <Text key={index} style={styles.content}>{formattedCategory}: {technologies}</Text>
+    );
+  });
+  return(
+  <Document>
+    <Page size='A4' style={styles.page}>
+      <View style={styles.header}>
+        <Text style={styles.headerMain}>{fullname}</Text>
+       
+        <Text style={styles.headerSub}>{links}</Text>
+      </View>
+      <View style={styles.section}>
+        <Text style={styles.sectionHeader}>Objectives:</Text>
+        <Text style={styles.sectionDivider}/>
+        <Text style={styles.content}>{obj}</Text>
+      </View>
+      <View style={styles.section}>
+          <Text style={styles.sectionHeader}>Skills:</Text>
+          <Text style={styles.sectionDivider}/>
+          {formattedSkills}
+        </View>
+      <View style={styles.section}>
+        <Text style={styles.sectionHeader}>Experience:</Text>
+        <Text style={styles.sectionDivider}/>
+        <Text style={styles.content}>{exp}</Text>
+      </View>
+      <View style={styles.section}>
+        <Text style={styles.sectionHeader}>Education:</Text>
+        <Text style={styles.sectionDivider}/>
+        <Text style={styles.content}>{edu}</Text>
+      </View>
+    </Page>
   </Document>
-);
+  );
+};
 
 const PDFCreatorPage = () => {
   const [showPdf, setShowPdf] = useState(false);
@@ -85,6 +178,49 @@ const PDFCreatorPage = () => {
       return alert("All fields are required");
     setShowPdf(true);
   };
+
+  const formatLinks = (text:string) =>
+  {
+    // Split the input text by spaces
+  const words = text.split(" ");
+  
+  // Join the words with " | " between each pair
+  const formattedText = words.join("  |  ");
+
+  return formattedText;
+  }
+
+  const formatSkills = (inputText:string) =>{
+  // Split the input text into lines
+  const lines = inputText.split("\n");
+  
+  // Initialize an empty array to store formatted skills
+  const formattedSkills: string[] =[];
+
+  // Iterate over each line
+  lines.forEach(line => {
+    // Split the line into category and technologies
+    const [category, technologies] = line.split(":");
+    
+    // Trim leading and trailing whitespace from category and technologies
+    const trimmedCategory = category.trim();
+    const trimmedTechnologies = technologies.trim();
+
+    // Split technologies into individual items
+    const techArray = trimmedTechnologies.split(",").map(tech => tech.trim());
+
+    // Format the technologies followed by a colon (:) and the skills separated by commas
+    const formattedLine = `${trimmedCategory}: ${techArray.join(", ")}`;
+
+    // Push the formatted line to the array
+    formattedSkills.push(formattedLine);
+  });
+
+  // Join the formatted skills with newlines
+  const result = formattedSkills.join("\n");
+
+  return result;
+  }
 
   const inputStyles = "border border-slate-200 p-1.5 rounded";
   const additionalStyles = {
@@ -145,7 +281,7 @@ const focusStyles = `
            // className={inputStyles}
             style={additionalStyles}
             placeholder='Links'
-            onChange={(e) => setlinks(e.target.value)}
+            onChange={(e) => setlinks(formatLinks(e.target.value))}
           />
           <textarea
             // className={inputStyles}
@@ -157,7 +293,7 @@ const focusStyles = `
             // className={inputStyles}
             style={additionalStyles}
             placeholder='Skills'
-            onChange={(e) => setskills(e.target.value)}
+            onChange={(e) => setskills(formatSkills(e.target.value))}
           />
           <textarea
             // className={inputStyles}
