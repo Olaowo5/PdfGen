@@ -82,6 +82,36 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontStyle: "Nunito",
   },
+
+  workHistoryEntry: {
+    
+    marginBottom: 5,
+  },
+  workHistoryHeader: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    marginBottom: 3,
+  },
+  workHistoryDetails: {
+    marginBottom: 3,
+  },
+  company: {
+    fontWeight: 'bold',
+    textDecoration: 'underline',
+  },
+  dates: {
+    fontWeight: 'semibold', // Semi-bold
+  },
+  location: {
+    fontStyle: 'italic',
+  },
+  role: {
+    fontWeight: 'bold',
+  },
+  exp: {
+    marginTop: 2, // Adjust spacing between work history details and experience
+  },
 });
 // Create Document Component
 const PDFView = ({
@@ -89,7 +119,8 @@ const PDFView = ({
     links, //links
     obj, //objective
     skills,
-    exp, //experience
+    workHistory,
+  
     edu, //education
     // yearsOfExperience,
 }: {
@@ -97,8 +128,9 @@ const PDFView = ({
   links: string,
   obj: string,
   skills: string,
-  exp: string,
-  edu:string
+ 
+  edu:string,
+  workHistory: { company: string; dates: string; location: string; role: string; exp: string }[];
  
 }) => {
   /*
@@ -144,11 +176,24 @@ const PDFView = ({
           <Text style={styles.sectionDivider}/>
           {formattedSkills}
         </View>
-      <View style={styles.section}>
-        <Text style={styles.sectionHeader}>Experience:</Text>
-        <Text style={styles.sectionDivider}/>
-        <Text style={styles.content}>{exp}</Text>
-      </View>
+        <View style={styles.section}>
+          <Text style={styles.sectionHeader}>Work History/Experience:</Text>
+          <Text style={styles.sectionDivider}/>
+          {workHistory.map((entry, index) => (
+            <View key={index} style={styles.workHistoryEntry}>
+              <View style={styles.workHistoryHeader}>
+                <Text style={styles.role}>{entry.role}</Text>
+                <Text style={styles.company}>{entry.company}</Text>
+                <Text style={styles.location}>{entry.location}</Text>
+                <Text style={styles.dates}>{entry.dates}</Text>
+              </View>
+              <Text style={styles.exp}>{entry.exp}</Text>
+            </View>
+          ))}
+        </View>
+
+         
+    
       <View style={styles.section}>
         <Text style={styles.sectionHeader}>Education:</Text>
         <Text style={styles.sectionDivider}/>
@@ -167,13 +212,17 @@ const PDFCreatorPage = () => {
   const [links, setlinks] = useState("");
   const [object, setobj] = useState("");
   const [skills, setskills] = useState("");
-  const [expe, setHistory] = useState("");
+  
   const [edu, setedu] = useState("");
+  // State for work history entries
+  const [workHistory, setWorkHistory] = useState([
+    { company: "", dates: "", location: "", role: "", exp: ""},
+  ]);
 
 
   const handleGeneratePDF = () => {
     if (!fullname  || !links || !object
-        || !skills || !expe || !edu
+        || !skills || !edu
     )
       return alert("All fields are required");
     setShowPdf(true);
@@ -189,6 +238,29 @@ const PDFCreatorPage = () => {
 
   return formattedText;
   }
+
+  // Define a type/interface for the work history entry
+interface WorkHistoryEntry {
+  company: string;
+  dates: string;
+  location: string;
+  role: string;
+  exp: string;
+}
+
+  
+
+  // Function to add new work history entry
+  const addWorkHistoryEntry = () => {
+    setWorkHistory([...workHistory, { company: "", dates: "", location: "", role: "" , exp: ""}]);
+  };
+
+ // Function to handle changes in work history entry
+const handleWorkHistoryChange = (index: number, key: keyof WorkHistoryEntry, value: string) => {
+  const updatedWorkHistory = [...workHistory];
+  updatedWorkHistory[index][key] = value;
+  setWorkHistory(updatedWorkHistory);
+};
 
   const formatSkills = (inputText:string) =>{
   // Split the input text into lines
@@ -246,8 +318,8 @@ const focusStyles = `
             links = {links}
             obj = {object}
             skills = {skills}
-            edu = {edu}
-            exp = {expe}
+            edu = {edu}         
+            workHistory={workHistory}
            
           />
           <PDFDownloadLink
@@ -258,8 +330,8 @@ const focusStyles = `
               links = {links}
               obj = {object}
               skills = {skills}
-              edu = {edu}
-              exp = {expe}
+              edu = {edu}              
+              workHistory={workHistory}
               />
             }
             fileName='React_ola.pdf'
@@ -295,12 +367,7 @@ const focusStyles = `
             placeholder='Skills'
             onChange={(e) => setskills(formatSkills(e.target.value))}
           />
-          <textarea
-            // className={inputStyles}
-            style={additionalStyles}
-            placeholder='Experience / WorkHistory'
-            onChange={(e) => setHistory(e.target.value)}
-          />
+         
 
          <textarea
            // className={inputStyles}
@@ -308,6 +375,53 @@ const focusStyles = `
             placeholder='Education'
             onChange={(e) => setedu(e.target.value)}
           />
+
+          <div  style={additionalStyles}>
+               
+                  {/* Input fields for personal information */}
+                  {/* Input fields for work history */}
+                  {workHistory.map((entry, index) => (
+                    <div key={index} className="flex flex-col gap-2">
+                      <input
+                        type="text"
+                        placeholder="Company"
+                        value={entry.company}
+                        onChange={(e) => handleWorkHistoryChange(index, "company", e.target.value)}
+                      />
+                      <input
+                        type="text"
+                        placeholder="Dates"
+                        value={entry.dates}
+                        onChange={(e) => handleWorkHistoryChange(index, "dates", e.target.value)}
+                      />
+                      <input
+                        type="text"
+                        placeholder="Location"
+                        value={entry.location}
+                        onChange={(e) => handleWorkHistoryChange(index, "location", e.target.value)}
+                      />
+                      <input
+                        type="text"
+                        placeholder="Role"
+                        value={entry.role}
+                        onChange={(e) => handleWorkHistoryChange(index, "role", e.target.value)}
+                      />
+                      <input
+                        type="text"
+                        placeholder="Experience"
+                        value={entry.exp}
+                        onChange={(e) => handleWorkHistoryChange(index, "exp", e.target.value)}
+                      />
+                    </div>
+                  ))}
+                  {/* Button to add new work history entry */}
+                  <button onClick={addWorkHistoryEntry}
+                   className='bg-slate-600 px-2 py-1.5 rounded text-slate-100'
+                  >Add Work History Entry</button>
+                 
+                  
+            
+              </div>
          
          <button
             onClick={handleGeneratePDF}
