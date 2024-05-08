@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
 */
 
 const styles = StyleSheet.create({
+
   page: {
     padding: 12,
   },
@@ -80,7 +81,7 @@ const styles = StyleSheet.create({
   },
   content: {
     fontSize: 10,
-    fontStyle: "Nunito",
+    //fontFamily: "Nunito",
   },
 
   workHistoryEntry: {
@@ -95,22 +96,34 @@ const styles = StyleSheet.create({
   },
   workHistoryDetails: {
     marginBottom: 3,
+    fontSize: 10,
+    //fontFamily: "Nunito",
   },
   company: {
     fontWeight: 'bold',
     textDecoration: 'underline',
+    fontSize: 10,
+    //fontFamily: "Nunito",
+    
   },
   dates: {
     fontWeight: 'semibold', // Semi-bold
+    fontSize: 10,
+    //fontFamily: "Nunito",
   },
   location: {
     fontStyle: 'italic',
+    fontSize: 10,
+    //: "Nunito",
   },
   role: {
     fontWeight: 'bold',
+    fontSize: 10,
+    //fontFamily: "Nunito",
   },
   exp: {
     marginTop: 2, // Adjust spacing between work history details and experience
+    fontSize: 10,
   },
 });
 // Create Document Component
@@ -128,22 +141,23 @@ const PDFView = ({
   links: string,
   obj: string,
   skills: string,
- 
-  edu:string,
+  //edu:string,
+  edu:{program: string; schools: string; location:string; dates:string; info:string;}[];
+
   workHistory: { company: string; dates: string; location: string; role: string; exp: string }[];
  
 }) => {
   /*
   <Document>
     <Page size='A4' style={styles.page}>
-      <View style={styles.section}>
+      <view style={styles.section}>
         <Text>Fullname: {fullname}</Text>
         <Text>Links: {links}</Text>
         <Text>Objective: {obj}</Text>
         <Text>Skills: {skills}</Text>
         <Text>Education: {edu}</Text>
         <Text>Experience: {exp}</Text>
-      </View>
+      </view>
     </Page>
   </Document>*/
   
@@ -161,44 +175,54 @@ const PDFView = ({
   return(
   <Document>
     <Page size='A4' style={styles.page}>
-      <View style={styles.header}>
+      <view style={styles.header}>
         <Text style={styles.headerMain}>{fullname}</Text>
        
         <Text style={styles.headerSub}>{links}</Text>
-      </View>
-      <View style={styles.section}>
+      </view>
+      <view style={styles.section}>
         <Text style={styles.sectionHeader}>Objectives:</Text>
         <Text style={styles.sectionDivider}/>
         <Text style={styles.content}>{obj}</Text>
-      </View>
-      <View style={styles.section}>
+      </view>
+      <view style={styles.section}>
           <Text style={styles.sectionHeader}>Skills:</Text>
           <Text style={styles.sectionDivider}/>
           {formattedSkills}
-        </View>
-        <View style={styles.section}>
+        </view>
+        <view style={styles.section}>
           <Text style={styles.sectionHeader}>Work History/Experience:</Text>
           <Text style={styles.sectionDivider}/>
           {workHistory.map((entry, index) => (
-            <View key={index} style={styles.workHistoryEntry}>
-              <View style={styles.workHistoryHeader}>
+            <view key={index} style={styles.workHistoryEntry}>
+              <view style={styles.workHistoryHeader}>
                 <Text style={styles.role}>{entry.role}</Text>
                 <Text style={styles.company}>{entry.company}</Text>
                 <Text style={styles.location}>{entry.location}</Text>
                 <Text style={styles.dates}>{entry.dates}</Text>
-              </View>
+              </view>
               <Text style={styles.exp}>{entry.exp}</Text>
-            </View>
+            </view>
           ))}
-        </View>
+        </view>
 
          
     
-      <View style={styles.section}>
-        <Text style={styles.sectionHeader}>Education:</Text>
-        <Text style={styles.sectionDivider}/>
-        <Text style={styles.content}>{edu}</Text>
-      </View>
+        <view style={styles.section}>
+          <Text style={styles.sectionHeader}>Education:</Text>
+          <Text style={styles.sectionDivider}/>
+          {edu.map((entry, index) => (
+            <view key={index} style={styles.workHistoryEntry}>
+              <view style={styles.workHistoryHeader}>
+                <Text style={styles.role}>{entry.program}</Text> 
+                <Text style={styles.company}>{entry.schools}</Text>
+                <Text style={styles.location}>{entry.location}</Text>
+                <Text style={styles.dates}>{entry.dates}</Text>
+              </view>
+              <Text style={styles.exp}>{entry.info}</Text>
+            </view>
+          ))}
+        </view>
     </Page>
   </Document>
   );
@@ -213,7 +237,9 @@ const PDFCreatorPage = () => {
   const [object, setobj] = useState("");
   const [skills, setskills] = useState("");
   
-  const [edu, setedu] = useState("");
+  const [edu, setedu] = useState([
+    {program: "", schools: "", location:"", dates:"", info:""},
+  ]);
   // State for work history entries
   const [workHistory, setWorkHistory] = useState([
     { company: "", dates: "", location: "", role: "", exp: ""},
@@ -262,6 +288,29 @@ const handleWorkHistoryChange = (index: number, key: keyof WorkHistoryEntry, val
   setWorkHistory(updatedWorkHistory);
 };
 
+ // Define a type/interface for the work history entry
+ interface EduHistoryEntry {
+  program: string;
+  dates: string;
+  location: string;
+  schools: string;
+  info: string;
+}
+
+// Function to add new work history entry
+const addEduHistoryEntry = () => {
+  setedu([...edu, { program: "", dates: "", location: "", schools: "" , info: ""}]);
+};
+
+// Function to handle changes in work history entry
+const handleEduHistoryChange = (index: number, key: keyof EduHistoryEntry, value: string) => {
+const updatedEduHistory = [...edu];
+updatedEduHistory[index][key] = value;
+setedu(updatedEduHistory);
+};
+
+
+
   const formatSkills = (inputText:string) =>{
   // Split the input text into lines
   const lines = inputText.split("\n");
@@ -309,6 +358,55 @@ const focusStyles = `
   border-color: #007bff; /* Change border color on focus */
 `;
 
+const formatExperience = (inputText: string) => {
+  // Split the input text into paragraphs
+  const paragraphs = inputText.split("\n\n");
+  
+  // Initialize an empty array to store formatted experience
+  const formattedExperience : string[] =[];
+
+  // Iterate over each paragraph
+  paragraphs.forEach(paragraph => {
+    // Trim leading and trailing whitespace
+    const trimmedParagraph = paragraph.trim();
+    
+    // Ignore empty paragraphs
+    if (trimmedParagraph !== "") {
+      // Split the paragraph into segments using triple spaces as delimiter
+      const segments = trimmedParagraph.split(/\s{3,}/);
+      
+      // Initialize an empty array to store formatted segments
+      const formattedSegments: string[] = [];
+
+      // Iterate over each segment and add bullet point
+      segments.forEach(segment => {
+        // Trim leading and trailing whitespace from each segment
+        const trimmedSegment = segment.trim();
+        
+        // Ignore empty segments
+        if (trimmedSegment !== "") {
+          // Add formatted segment to the array
+          formattedSegments.push(trimmedSegment);
+        }
+      });
+
+      // Add bullet point and formatted segments to the array
+      if (formattedSegments.length > 0) {
+        formattedExperience.push(` ${formattedSegments.join(", ")}`);
+      }
+    }
+  });
+
+  // Join the formatted experience with newlines
+  const result = formattedExperience.join("\n");
+
+  return result;
+};
+
+
+
+
+
   return (
     <div className='flex justify-center items-center min-h-screen'>
       {showPdf ? (
@@ -323,6 +421,7 @@ const focusStyles = `
            
           />
           <PDFDownloadLink
+           style={{ marginTop: '120px' }} // Adjust the value as needed
             className='text-blue-500 underline'
             document={
               <PDFView
@@ -366,18 +465,12 @@ const focusStyles = `
             style={additionalStyles}
             placeholder='Skills'
             onChange={(e) => setskills(formatSkills(e.target.value))}
-          />
-         
+          />     
+        
 
-         <textarea
-           // className={inputStyles}
-           style={additionalStyles}
-            placeholder='Education'
-            onChange={(e) => setedu(e.target.value)}
-          />
 
           <div  style={additionalStyles}>
-               
+               {/* Work History entering */}
                   {/* Input fields for personal information */}
                   {/* Input fields for work history */}
                   {workHistory.map((entry, index) => (
@@ -406,11 +499,10 @@ const focusStyles = `
                         value={entry.role}
                         onChange={(e) => handleWorkHistoryChange(index, "role", e.target.value)}
                       />
-                      <input
-                        type="text"
+                      <textarea                       
                         placeholder="Experience"
                         value={entry.exp}
-                        onChange={(e) => handleWorkHistoryChange(index, "exp", e.target.value)}
+                        onChange={(e) => handleWorkHistoryChange(index, "exp",formatExperience(e.target.value))}
                       />
                     </div>
                   ))}
@@ -423,6 +515,52 @@ const focusStyles = `
             
               </div>
          
+              <div  style={additionalStyles}>
+               {/* Education entering */}
+               {/* Input fields for personal information */}
+               {/* Input fields for work history */}
+               {edu.map((entry, index) => (
+                 <div key={index} className="flex flex-col gap-2">
+                   <input
+                     type="text"
+                     placeholder="School Program"
+                     value={entry.program}
+                     onChange={(e) => handleEduHistoryChange(index, "program", e.target.value)}
+                   />
+                    <input
+                     type="text"
+                     placeholder="School"
+                     value={entry.schools}
+                     onChange={(e) => handleEduHistoryChange(index, "schools", e.target.value)}
+                   />
+                   <input
+                     type="text"
+                     placeholder="Dates"
+                     value={entry.dates}
+                     onChange={(e) => handleEduHistoryChange(index, "dates", e.target.value)}
+                   />
+                   <input
+                     type="text"
+                     placeholder="Location"
+                     value={entry.location}
+                     onChange={(e) => handleEduHistoryChange(index, "location", e.target.value)}
+                   />
+                  
+                   <textarea                       
+                     placeholder="Info"
+                     value={entry.info}
+                     onChange={(e) => handleEduHistoryChange(index, "info",formatExperience(e.target.value))}
+                   />
+                 </div>
+               ))}
+               {/* Button to add new work history entry */}
+               <button onClick={addEduHistoryEntry}
+                className='bg-slate-600 px-2 py-1.5 rounded text-slate-100'
+               >Add Work Education Entry</button>
+              
+              </div>
+         
+          
          <button
             onClick={handleGeneratePDF}
             className='bg-slate-800 px-2 py-1.5 rounded text-slate-100'
