@@ -1,6 +1,9 @@
 "use client";
 
+
+
 import React, { useState } from "react";
+//import { Font, SingleLoad } from '@react-pdf/font';
 import {
   Page,
   Text,
@@ -8,7 +11,30 @@ import {
   Document,
   StyleSheet,
   PDFDownloadLink,
+  Font,
+
+ 
 } from "@react-pdf/renderer";
+
+
+//Font
+// Register each font individually
+Font.register({
+  family: 'Nunito',
+  src: '../../Fonts/Nunito/Nunito-Regular.ttf',
+});
+
+Font.register({
+  family: 'Nunito',
+  fontStyle: 'italic',
+  src: '../../Fonts/Nunito/Nunito-Italic.ttf',
+});
+
+Font.register({
+  family: 'Nunito',
+  fontWeight: 'bold',
+  src: '../../Fonts/Nunito/Nunito-Bold.ttf',
+});
 
 // Create styles for the pdf
 /*
@@ -44,13 +70,15 @@ const styles = StyleSheet.create({
   header: {
     marginBottom: 10,
     textAlign: 'center',
+   
   },
   headerMain: {
     fontSize: 20,
     fontWeight: 'bold',
+   // fontStyle: 'italic',
   },
   headerSub: {
-    fontSize: 12,
+    fontSize: 9,
   },
   section: {
     marginBottom: 10,
@@ -113,6 +141,7 @@ const styles = StyleSheet.create({
   },
   location: {
     fontStyle: 'italic',
+   //fontFamily: 'Lato Italic',
     fontSize: 10,
     //: "Nunito",
   },
@@ -132,8 +161,7 @@ const PDFView = ({
     links, //links
     obj, //objective
     skills,
-    workHistory,
-  
+    workHistory, 
     edu, //education
     // yearsOfExperience,
 }: {
@@ -150,14 +178,14 @@ const PDFView = ({
   /*
   <Document>
     <Page size='A4' style={styles.page}>
-      <view style={styles.section}>
+      <View style={styles.section}>
         <Text>Fullname: {fullname}</Text>
         <Text>Links: {links}</Text>
         <Text>Objective: {obj}</Text>
         <Text>Skills: {skills}</Text>
         <Text>Education: {edu}</Text>
         <Text>Experience: {exp}</Text>
-      </view>
+      </View>
     </Page>
   </Document>*/
   
@@ -175,54 +203,54 @@ const PDFView = ({
   return(
   <Document>
     <Page size='A4' style={styles.page}>
-      <view style={styles.header}>
+      <View style={styles.header}>
         <Text style={styles.headerMain}>{fullname}</Text>
        
         <Text style={styles.headerSub}>{links}</Text>
-      </view>
-      <view style={styles.section}>
+      </View>
+      <View style={styles.section}>
         <Text style={styles.sectionHeader}>Objectives:</Text>
         <Text style={styles.sectionDivider}/>
         <Text style={styles.content}>{obj}</Text>
-      </view>
-      <view style={styles.section}>
+      </View>
+      <View style={styles.section}>
           <Text style={styles.sectionHeader}>Skills:</Text>
           <Text style={styles.sectionDivider}/>
           {formattedSkills}
-        </view>
-        <view style={styles.section}>
+        </View>
+        <View style={styles.section}>
           <Text style={styles.sectionHeader}>Work History/Experience:</Text>
           <Text style={styles.sectionDivider}/>
           {workHistory.map((entry, index) => (
-            <view key={index} style={styles.workHistoryEntry}>
-              <view style={styles.workHistoryHeader}>
+            <View key={index} style={styles.workHistoryEntry}>
+              <View style={styles.workHistoryHeader}>
                 <Text style={styles.role}>{entry.role}</Text>
                 <Text style={styles.company}>{entry.company}</Text>
                 <Text style={styles.location}>{entry.location}</Text>
                 <Text style={styles.dates}>{entry.dates}</Text>
-              </view>
+              </View>
               <Text style={styles.exp}>{entry.exp}</Text>
-            </view>
+            </View>
           ))}
-        </view>
+        </View>
 
          
     
-        <view style={styles.section}>
+        <View style={styles.section}>
           <Text style={styles.sectionHeader}>Education:</Text>
           <Text style={styles.sectionDivider}/>
           {edu.map((entry, index) => (
-            <view key={index} style={styles.workHistoryEntry}>
-              <view style={styles.workHistoryHeader}>
+            <View key={index} style={styles.workHistoryEntry}>
+              <View style={styles.workHistoryHeader}>
                 <Text style={styles.role}>{entry.program}</Text> 
                 <Text style={styles.company}>{entry.schools}</Text>
                 <Text style={styles.location}>{entry.location}</Text>
                 <Text style={styles.dates}>{entry.dates}</Text>
-              </view>
+              </View>
               <Text style={styles.exp}>{entry.info}</Text>
-            </view>
+            </View>
           ))}
-        </view>
+        </View>
     </Page>
   </Document>
   );
@@ -359,42 +387,18 @@ const focusStyles = `
 `;
 
 const formatExperience = (inputText: string) => {
-  // Split the input text into paragraphs
-  const paragraphs = inputText.split("\n\n");
-  
+  // Define the regular expression pattern to match sentences
+  const sentencePattern = /[^.!?\s][^.!?]*(?:[.!?](?!['"]?\s|$)[^.!?]*)*[.!?]?['"]?(?=\s|$)/g;
+
+  // Extract sentences from the text
+  const sentences = inputText.match(sentencePattern);
+
   // Initialize an empty array to store formatted experience
-  const formattedExperience : string[] =[];
+  const formattedExperience: string[] = [];
 
-  // Iterate over each paragraph
-  paragraphs.forEach(paragraph => {
-    // Trim leading and trailing whitespace
-    const trimmedParagraph = paragraph.trim();
-    
-    // Ignore empty paragraphs
-    if (trimmedParagraph !== "") {
-      // Split the paragraph into segments using triple spaces as delimiter
-      const segments = trimmedParagraph.split(/\s{3,}/);
-      
-      // Initialize an empty array to store formatted segments
-      const formattedSegments: string[] = [];
-
-      // Iterate over each segment and add bullet point
-      segments.forEach(segment => {
-        // Trim leading and trailing whitespace from each segment
-        const trimmedSegment = segment.trim();
-        
-        // Ignore empty segments
-        if (trimmedSegment !== "") {
-          // Add formatted segment to the array
-          formattedSegments.push(trimmedSegment);
-        }
-      });
-
-      // Add bullet point and formatted segments to the array
-      if (formattedSegments.length > 0) {
-        formattedExperience.push(` ${formattedSegments.join(", ")}`);
-      }
-    }
+  // Iterate over each sentence and add bullet points
+  sentences?.forEach((sentence) => {
+    formattedExperience.push(`• ${sentence.trim()}`);
   });
 
   // Join the formatted experience with newlines
@@ -402,7 +406,6 @@ const formatExperience = (inputText: string) => {
 
   return result;
 };
-
 
 
 
