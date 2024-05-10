@@ -12,6 +12,7 @@ import {
   StyleSheet,
   PDFDownloadLink,
   Font,
+  Link,
 
  
 } from "@react-pdf/renderer";
@@ -166,7 +167,7 @@ const PDFView = ({
     // yearsOfExperience,
 }: {
   fullname: string;
-  links: string,
+  links: {label: string; url: string;}[],
   obj: string,
   skills: string,
   //edu:string,
@@ -200,13 +201,41 @@ const PDFView = ({
       <Text key={index} style={styles.content}>{formattedCategory}: {technologies}</Text>
     );
   });
+
+  //Split the Links Url
+  const formatedLinks = (links: { label: string; url: string }[]) => {
+    return links.map(({ label, url }, index) => {
+      if (url) {
+        return (
+          <React.Fragment key={index}>
+            <Link src={url}>
+              {label}
+            </Link>
+            {index < links.length - 1 && <Text>{" | "}</Text>}
+            <br />
+          </React.Fragment>
+        );
+      } else {
+        return (
+          <React.Fragment key={index}>
+            <Text>
+              {label}
+            </Text>
+            {index < links.length - 1 && <Text>{" | "}</Text>}
+            <br />
+          </React.Fragment>
+        );
+      }
+    });
+  };
+
   return(
   <Document>
     <Page size='A4' style={styles.page}>
       <View style={styles.header}>
         <Text style={styles.headerMain}>{fullname}</Text>
        
-        <Text style={styles.headerSub}>{links}</Text>
+        <Text style={styles.headerSub}>{formatedLinks(links)}</Text>
       </View>
       <View style={styles.section}>
         <Text style={styles.sectionHeader}>Objectives:</Text>
@@ -261,8 +290,8 @@ const PDFCreatorPage = () => {
   const [fullname, setFullname] = useState("");
   const [profession, setProfession] = useState("");
   const [yearsOfExperience, setYearsOfExperience] = useState("");
-  const [links, setlinks] = useState("");
-  const [object, setobj] = useState("");
+  const [links, setlinks] = useState([{label: "", url: ""}]);
+  const [object, setobj] = useState(""); //Objective
   const [skills, setskills] = useState("");
   
   const [edu, setedu] = useState([
@@ -282,16 +311,49 @@ const PDFCreatorPage = () => {
     setShowPdf(true);
   };
 
-  const formatLinks = (text:string) =>
-  {
+  /*
+  const formatLinks = (text: string) => {
     // Split the input text by spaces
-  const words = text.split(" ");
+    const links = text.split(/\s+/);
   
-  // Join the words with " | " between each pair
-  const formattedText = words.join("  |  ");
+    // Initialize an array to store formatted links
+    const formattedLinks: string[] = [];
+  
+    // Regular expression to match URLs
+    const urlRegex = /(https?:\/\/[^\s]+)/;
+  
+    // Iterate over each word
+    links.forEach(link => {
+      // Check if the word is a URL
+      const match = link.match(urlRegex);
+      if (match) {
+        // If it's a URL, add it to the formatted links
+        formattedLinks.push(link);
+      }
+    });
+  
+    // Join the formatted links with the pipe symbol
+    const result = formattedLinks.join(' | ');
+  
+    return result;
+  };
+  */
 
-  return formattedText;
-  }
+  const extractLinks = (text: string) => {
+    // Regular expression to match labels and URLs
+    const linkRegex = /(\w+)\s*:\s*{(\s*https?:\/\/[^\s]+|\s*|\s*)}/g;
+  
+    // Extract labels and URLs from the input text
+    const links: { label: string; url: string }[] = [];
+    let match;
+    while ((match = linkRegex.exec(text)) !== null) {
+      const [, label, url] = match;
+      links.push({ label, url: url ? url.trim() : '' }); // Trim the URL if it's not empty
+    }
+  
+    console.log(links);
+    return links;
+  };
 
   // Define a type/interface for the work history entry
 interface WorkHistoryEntry {
@@ -455,7 +517,7 @@ const formatExperience = (inputText: string) => {
            // className={inputStyles}
             style={additionalStyles}
             placeholder='Links'
-            onChange={(e) => setlinks(formatLinks(e.target.value))}
+            onChange={(e) => setlinks(extractLinks(e.target.value))}
           />
           <textarea
             // className={inputStyles}
