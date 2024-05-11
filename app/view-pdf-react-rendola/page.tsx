@@ -341,19 +341,21 @@ const PDFCreatorPage = () => {
 
   const extractLinks = (text: string) => {
     // Regular expression to match labels and URLs
-    const linkRegex = /(\w+)\s*:\s*{(\s*https?:\/\/[^\s]+|\s*|\s*)}/g;
+    const linkRegex = /(\S+)\s*:\s*{(\s*https?:\/\/[^\s{}]+|\s*|\s*)}/g;
   
     // Extract labels and URLs from the input text
     const links: { label: string; url: string }[] = [];
     let match;
     while ((match = linkRegex.exec(text)) !== null) {
       const [, label, url] = match;
-      links.push({ label, url: url ? url.trim() : '' }); // Trim the URL if it's not empty
+      links.push({ label, url: url.trim() });
     }
   
     console.log(links);
     return links;
   };
+
+
 
   // Define a type/interface for the work history entry
 interface WorkHistoryEntry {
