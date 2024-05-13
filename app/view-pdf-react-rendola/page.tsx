@@ -3,6 +3,7 @@
 
 
 import React, { useState } from "react";
+import MyHead from '../Components/head'; // Adjust the path based on your file structure
 //import { Font, SingleLoad } from '@react-pdf/font';
 import {
   Page,
@@ -475,6 +476,8 @@ const formatExperience = (inputText: string) => {
 
 
   return (
+
+    
     <div className='flex justify-center items-center min-h-screen'>
       {showPdf ? (
         <div className='flex flex-col items-center'>
@@ -508,134 +511,130 @@ const formatExperience = (inputText: string) => {
           </PDFDownloadLink>
         </div>
       ) : (
+        <><MyHead />
         <section className='flex flex-col gap-2'>
-          <input
-           //className={additionalStyles}
-          style={additionalStyles}
-            placeholder='Fullname'
-            onChange={(e) => setFullname(e.target.value)}
-          />
-          <textarea
-           // className={inputStyles}
-            style={additionalStyles}
-            placeholder='Links'
-            onChange={(e) => setlinks(extractLinks(e.target.value))}
-          />
-          <textarea
-            // className={inputStyles}
-            style={additionalStyles}
-            placeholder='Profile Summary/Objective'
-            onChange={(e) => setobj(e.target.value)}
-          />
-          <textarea
-            // className={inputStyles}
-            style={additionalStyles}
-            placeholder='Skills'
-            onChange={(e) => setskills(formatSkills(e.target.value))}
-          />     
-        
-
-
-          <div  style={additionalStyles}>
-               {/* Work History entering */}
-                  {/* Input fields for personal information */}
-                  {/* Input fields for work history */}
-                  {workHistory.map((entry, index) => (
-                    <div key={index} className="flex flex-col gap-2">
-                      <input
-                        type="text"
-                        placeholder="Company"
-                        value={entry.company}
-                        onChange={(e) => handleWorkHistoryChange(index, "company", e.target.value)}
-                      />
-                      <input
-                        type="text"
-                        placeholder="Dates"
-                        value={entry.dates}
-                        onChange={(e) => handleWorkHistoryChange(index, "dates", e.target.value)}
-                      />
-                      <input
-                        type="text"
-                        placeholder="Location"
-                        value={entry.location}
-                        onChange={(e) => handleWorkHistoryChange(index, "location", e.target.value)}
-                      />
-                      <input
-                        type="text"
-                        placeholder="Role"
-                        value={entry.role}
-                        onChange={(e) => handleWorkHistoryChange(index, "role", e.target.value)}
-                      />
-                      <textarea                       
-                        placeholder="Experience"
-                        value={entry.exp}
-                        onChange={(e) => handleWorkHistoryChange(index, "exp",formatExperience(e.target.value))}
-                      />
-                    </div>
-                  ))}
-                  {/* Button to add new work history entry */}
-                  <button onClick={addWorkHistoryEntry}
-                   className='bg-slate-600 px-2 py-1.5 rounded text-slate-100'
-                  >Add Work History Entry</button>
-                 
-                  
-            
+            <div className="card mb-4">
+              <h5 className="card-header">Default</h5>
+              <div className="card-body">
+                <div>
+                  <label htmlFor="fullname" className="form-label">Name</label>
+                  <input
+                    id="fullname"
+                    //className={additionalStyles}
+                    style={additionalStyles}
+                    placeholder='Fullname'
+                    onChange={(e) => setFullname(e.target.value)} />
+                </div>
               </div>
-         
-              <div  style={additionalStyles}>
-               {/* Education entering */}
-               {/* Input fields for personal information */}
-               {/* Input fields for work history */}
-               {edu.map((entry, index) => (
-                 <div key={index} className="flex flex-col gap-2">
-                   <input
-                     type="text"
-                     placeholder="School Program"
-                     value={entry.program}
-                     onChange={(e) => handleEduHistoryChange(index, "program", e.target.value)}
-                   />
-                    <input
-                     type="text"
-                     placeholder="School"
-                     value={entry.schools}
-                     onChange={(e) => handleEduHistoryChange(index, "schools", e.target.value)}
-                   />
-                   <input
-                     type="text"
-                     placeholder="Dates"
-                     value={entry.dates}
-                     onChange={(e) => handleEduHistoryChange(index, "dates", e.target.value)}
-                   />
-                   <input
-                     type="text"
-                     placeholder="Location"
-                     value={entry.location}
-                     onChange={(e) => handleEduHistoryChange(index, "location", e.target.value)}
-                   />
-                  
-                   <textarea                       
-                     placeholder="Info"
-                     value={entry.info}
-                     onChange={(e) => handleEduHistoryChange(index, "info",formatExperience(e.target.value))}
-                   />
-                 </div>
-               ))}
-               {/* Button to add new work history entry */}
-               <button onClick={addEduHistoryEntry}
+            </div>
+            <textarea
+              // className={inputStyles}
+              style={additionalStyles}
+              placeholder='Links'
+              onChange={(e) => setlinks(extractLinks(e.target.value))} />
+            <textarea
+              // className={inputStyles}
+              style={additionalStyles}
+              placeholder='Profile Summary/Objective'
+              onChange={(e) => setobj(e.target.value)} />
+            <textarea
+              // className={inputStyles}
+              style={additionalStyles}
+              placeholder='Skills'
+              onChange={(e) => setskills(formatSkills(e.target.value))} />
+
+
+
+            <div style={additionalStyles}>
+              {/* Work History entering */}
+              {/* Input fields for personal information */}
+              {/* Input fields for work history */}
+              {workHistory.map((entry, index) => (
+                <div key={index} className="flex flex-col gap-2">
+                  <input
+                    type="text"
+                    placeholder="Company"
+                    value={entry.company}
+                    onChange={(e) => handleWorkHistoryChange(index, "company", e.target.value)} />
+                  <input
+                    type="text"
+                    placeholder="Dates"
+                    value={entry.dates}
+                    onChange={(e) => handleWorkHistoryChange(index, "dates", e.target.value)} />
+                  <input
+                    type="text"
+                    placeholder="Location"
+                    value={entry.location}
+                    onChange={(e) => handleWorkHistoryChange(index, "location", e.target.value)} />
+                  <input
+                    type="text"
+                    placeholder="Role"
+                    value={entry.role}
+                    onChange={(e) => handleWorkHistoryChange(index, "role", e.target.value)} />
+                  <textarea
+                    placeholder="Experience"
+                    value={entry.exp}
+                    onChange={(e) => handleWorkHistoryChange(index, "exp", formatExperience(e.target.value))} />
+                </div>
+              ))}
+              {/* Button to add new work history entry */}
+              <button onClick={addWorkHistoryEntry}
                 className='bg-slate-600 px-2 py-1.5 rounded text-slate-100'
-               >Add Work Education Entry</button>
-              
-              </div>
-         
-          
-         <button
-            onClick={handleGeneratePDF}
-            className='bg-slate-800 px-2 py-1.5 rounded text-slate-100'
-          >
-            Generate PDF
-          </button>
-         
-        </section>
+              >Add Work History Entry</button>
+
+
+
+            </div>
+
+            <div style={additionalStyles}>
+              {/* Education entering */}
+              {/* Input fields for personal information */}
+              {/* Input fields for work history */}
+              {edu.map((entry, index) => (
+                <div key={index} className="flex flex-col gap-2">
+                  <input
+                    type="text"
+                    placeholder="School Program"
+                    value={entry.program}
+                    onChange={(e) => handleEduHistoryChange(index, "program", e.target.value)} />
+                  <input
+                    type="text"
+                    placeholder="School"
+                    value={entry.schools}
+                    onChange={(e) => handleEduHistoryChange(index, "schools", e.target.value)} />
+                  <input
+                    type="text"
+                    placeholder="Dates"
+                    value={entry.dates}
+                    onChange={(e) => handleEduHistoryChange(index, "dates", e.target.value)} />
+                  <input
+                    type="text"
+                    placeholder="Location"
+                    value={entry.location}
+                    onChange={(e) => handleEduHistoryChange(index, "location", e.target.value)} />
+
+                  <textarea
+                    placeholder="Info"
+                    value={entry.info}
+                    onChange={(e) => handleEduHistoryChange(index, "info", formatExperience(e.target.value))} />
+                </div>
+              ))}
+              {/* Button to add new work history entry */}
+              <button onClick={addEduHistoryEntry}
+                className='bg-slate-600 px-2 py-1.5 rounded text-slate-100'
+              >Add Work Education Entry</button>
+
+            </div>
+
+
+            <button
+              onClick={handleGeneratePDF}
+              className='bg-slate-800 px-2 py-1.5 rounded text-slate-100'
+            >
+              Generate PDF
+            </button>
+
+          </section></>
         
     
       )}
