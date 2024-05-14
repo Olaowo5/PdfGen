@@ -4,7 +4,7 @@ function MyHead() {
   return (
     <head>
       <meta charset='utf-8' />
-      <title>Title</title>
+      <title>Resume Gen</title>
 
       {/* Favicon */}
       <link rel='icon' type='image/x-icon' href='../../assets/img/favicon/favicon.ico' />

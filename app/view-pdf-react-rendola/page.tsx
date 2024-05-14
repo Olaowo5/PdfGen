@@ -512,39 +512,81 @@ const formatExperience = (inputText: string) => {
         </div>
       ) : (
         <><MyHead />
-        <section className='flex flex-col gap-2'>
-            <div className="card mb-4">
-              <h5 className="card-header">Default</h5>
-              <div className="card-body">
-                <div>
-                  <label htmlFor="fullname" className="form-label">Name</label>
-                  <input
-                    id="fullname"
-                    //className={additionalStyles}
-                    style={additionalStyles}
-                    placeholder='Fullname'
-                    onChange={(e) => setFullname(e.target.value)} />
-                </div>
-              </div>
+        
+        <section className='container-l flex-grow-1 container-p-y'>
+        <h4 className="py-3 mb-4">
+        <span className="text-muted fw-light">Resume Forms/</span> Pdf Generator
+        </h4>
+          <div className="row">
+
+           
+            <div className="col-md-6">
+              <div className="card mb-4">
+                <h5 className="card-header">Enter Full Name</h5>
+                <div className="card-body">
+                 
+
+                    
+                    <input
+                      id="fullname"
+                      className="form-control"
+                      //style={additionalStyles}
+                      placeholder='Fullname'
+                      onChange={(e) => setFullname(e.target.value)} />
+                  
+                  </div>
             </div>
+            </div>
+
+            <div className="col-md-6">
+              <div className="card mb-4">
+                <h5 className="card-header">Links</h5>
+            <div className="card-body">
+          
             <textarea
-              // className={inputStyles}
-              style={additionalStyles}
+              className="form-control"
+              id="linkl"
+              //style={additionalStyles}
               placeholder='Links'
               onChange={(e) => setlinks(extractLinks(e.target.value))} />
+              </div>
+              </div>
+              </div>
+
+          <div className="col-md-6">
+              <div className="card mb-4">
+                <h5 className="card-header">Enter Profile/Summary</h5>
+                <div className="card-body">
+              <textarea
+             
+                className="form-control"
+                //style={additionalStyles}
+                placeholder='Profile Summary/Objective'
+                onChange={(e) => setobj(e.target.value)} />
+
+                </div>
+              </div>
+          </div>
+
+
+          <div className="col-md-6">
+            <div className="card mb-4">
+              <h5 className="card-header">Enter Skills</h5>
+              <div className="card-body">
             <textarea
-              // className={inputStyles}
-              style={additionalStyles}
-              placeholder='Profile Summary/Objective'
-              onChange={(e) => setobj(e.target.value)} />
-            <textarea
-              // className={inputStyles}
-              style={additionalStyles}
+            id="skillo"
+              className="form-control"
+              //style={additionalStyles}
               placeholder='Skills'
               onChange={(e) => setskills(formatSkills(e.target.value))} />
+              </div>
+            </div>
+          </div>
 
-
-
+            <div className="col-md-6">
+            <div className="card mb-4">
+            <h5 className="card-header">Enter Work History</h5>
+            <div className="card-body">
             <div style={additionalStyles}>
               {/* Work History entering */}
               {/* Input fields for personal information */}
@@ -552,27 +594,32 @@ const formatExperience = (inputText: string) => {
               {workHistory.map((entry, index) => (
                 <div key={index} className="flex flex-col gap-2">
                   <input
+                  className="form-control"
                     type="text"
                     placeholder="Company"
                     value={entry.company}
                     onChange={(e) => handleWorkHistoryChange(index, "company", e.target.value)} />
                   <input
                     type="text"
+                    className="form-control"
                     placeholder="Dates"
                     value={entry.dates}
                     onChange={(e) => handleWorkHistoryChange(index, "dates", e.target.value)} />
                   <input
                     type="text"
+                    className="form-control"
                     placeholder="Location"
                     value={entry.location}
                     onChange={(e) => handleWorkHistoryChange(index, "location", e.target.value)} />
                   <input
                     type="text"
+                    className="form-control"
                     placeholder="Role"
                     value={entry.role}
                     onChange={(e) => handleWorkHistoryChange(index, "role", e.target.value)} />
                   <textarea
                     placeholder="Experience"
+                    className="form-control"
                     value={entry.exp}
                     onChange={(e) => handleWorkHistoryChange(index, "exp", formatExperience(e.target.value))} />
                 </div>
@@ -585,7 +632,14 @@ const formatExperience = (inputText: string) => {
 
 
             </div>
+            </div>
+            </div>
+            </div>
 
+            <div className="col-md-6">
+              <div className="card mb-4">
+              <h5 className="card-header">Enter Education</h5>
+              <div className="card-body">
             <div style={additionalStyles}>
               {/* Education entering */}
               {/* Input fields for personal information */}
@@ -593,27 +647,33 @@ const formatExperience = (inputText: string) => {
               {edu.map((entry, index) => (
                 <div key={index} className="flex flex-col gap-2">
                   <input
+                  className="form-control"
                     type="text"
                     placeholder="School Program"
                     value={entry.program}
                     onChange={(e) => handleEduHistoryChange(index, "program", e.target.value)} />
                   <input
                     type="text"
+                   
+                    className="form-control"
                     placeholder="School"
                     value={entry.schools}
                     onChange={(e) => handleEduHistoryChange(index, "schools", e.target.value)} />
                   <input
                     type="text"
+                    className="form-control"
                     placeholder="Dates"
                     value={entry.dates}
                     onChange={(e) => handleEduHistoryChange(index, "dates", e.target.value)} />
                   <input
                     type="text"
+                    className="form-control"
                     placeholder="Location"
                     value={entry.location}
                     onChange={(e) => handleEduHistoryChange(index, "location", e.target.value)} />
 
                   <textarea
+                   className="form-control"
                     placeholder="Info"
                     value={entry.info}
                     onChange={(e) => handleEduHistoryChange(index, "info", formatExperience(e.target.value))} />
@@ -625,14 +685,21 @@ const formatExperience = (inputText: string) => {
               >Add Work Education Entry</button>
 
             </div>
+            </div>
+            </div>
+           
 
-
+            
+         </div>
+              <div className="mb-2 d-flex justify-content-center">
             <button
               onClick={handleGeneratePDF}
-              className='bg-slate-800 px-2 py-1.5 rounded text-slate-100'
+              className='btn btn-lg btn-dark'
             >
               Generate PDF
             </button>
+            </div>
+      </div>
 
           </section></>
         
