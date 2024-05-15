@@ -239,7 +239,7 @@ const PDFView = ({
         <Text style={styles.headerSub}>{formatedLinks(links)}</Text>
       </View>
       <View style={styles.section}>
-        <Text style={styles.sectionHeader}>Objectives:</Text>
+        <Text style={styles.sectionHeader}>Profile Summary:</Text>
         <Text style={styles.sectionDivider}/>
         <Text style={styles.content}>{obj}</Text>
       </View>
@@ -249,7 +249,7 @@ const PDFView = ({
           {formattedSkills}
         </View>
         <View style={styles.section}>
-          <Text style={styles.sectionHeader}>Work History/Experience:</Text>
+          <Text style={styles.sectionHeader}>Experience:</Text>
           <Text style={styles.sectionDivider}/>
           {workHistory.map((entry, index) => (
             <View key={index} style={styles.workHistoryEntry}>
