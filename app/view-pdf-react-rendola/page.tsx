@@ -463,7 +463,7 @@ const formatExperience = (inputText: string) => {
 
   // Iterate over each sentence and add bullet points
   sentences?.forEach((sentence) => {
-    formattedExperience.push(`• ${sentence.trim()}`);
+    formattedExperience.push(`${sentence.trim()}`);
   });
 
   // Join the formatted experience with newlines
