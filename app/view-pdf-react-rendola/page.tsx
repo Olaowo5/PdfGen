@@ -451,7 +451,9 @@ const focusStyles = `
   border-color: #007bff; /* Change border color on focus */
 `;
 
+  //will need to fix here not accepting space or enter has inputs
 const formatExperience = (inputText: string) => {
+
   // Define the regular expression pattern to match sentences
   const sentencePattern = /[^.!?\s][^.!?]*(?:[.!?](?!['"]?\s|$)[^.!?]*)*[.!?]?['"]?(?=\s|$)/g;
 
