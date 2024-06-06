@@ -288,6 +288,7 @@ const PDFView = ({
 
 const PDFCreatorPage = () => {
   const [showPdf, setShowPdf] = useState(false);
+  const[applicant, setapplicant] = useState("");
   const [fullname, setFullname] = useState("");
   const [profession, setProfession] = useState("");
   const [yearsOfExperience, setYearsOfExperience] = useState("");
@@ -505,7 +506,7 @@ const formatExperience = (inputText: string) => {
               workHistory={workHistory}
               />
             }
-            fileName='React_ola.pdf'
+            fileName={`${applicant}_${fullname}.pdf`}
           >
             {({ blob, url, loading, error }) =>
               loading ? "Loading document..." : "Download pdf file"
@@ -521,6 +522,23 @@ const formatExperience = (inputText: string) => {
         </h4>
           <div className="row">
 
+          <div className="col-md-6">
+              <div className="card mb-4">
+                <h5 className="card-header">Enter Applying Company Name</h5>
+                <div className="card-body">
+                 
+
+                    
+                    <input
+                      id="applicant"
+                      className="form-control"
+                      //style={additionalStyles}
+                      placeholder='Aplicant'
+                      onChange={(e) => setapplicant(e.target.value)}/>
+                  
+                  </div>
+            </div>
+            </div>
            
             <div className="col-md-6">
               <div className="card mb-4">
