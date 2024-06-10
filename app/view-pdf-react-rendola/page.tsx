@@ -524,7 +524,7 @@ const formatExperience = (inputText: string) => {
 
           <div className="col-md-6">
               <div className="card mb-4">
-                <h5 className="card-header">Enter Applying Company Name</h5>
+                <h5 className="card-header">Enter Target Company Name</h5>
                 <div className="card-body">
                  
 
