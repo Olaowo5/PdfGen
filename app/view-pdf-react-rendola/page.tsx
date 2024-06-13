@@ -286,7 +286,26 @@ const PDFView = ({
   );
 };
 
+// Function to extract links from the provided string
+const parseLinks = (text: string) => {
+  const linksArray = text.split(' ').map(link => {
+    const [label, url] = link.split(/:\{(.+?)\}/).filter(Boolean);
+    return { label, url };
+  });
+  return linksArray;
+};
+
+
 const PDFCreatorPage = () => {
+
+
+  
+  //default states
+  const defaultFullname = "Olamide Owolabi";
+  const defaultLinksText = 'LinkedIn:{https://www.linkedin.com/in/olamide-owolabi/} 613-304-5454:{} olamideowolabi:{https://olamideowolabi.com/} adejimiowo2@outlook.com:{} GitHub:{https://github.com/Olaowo5}';
+  const defaultLinks = parseLinks(defaultLinksText);
+
+
   const [showPdf, setShowPdf] = useState(false);
   const[applicant, setapplicant] = useState("");
   const [fullname, setFullname] = useState("");
@@ -425,7 +444,7 @@ setedu(updatedEduHistory);
     const techArray = trimmedTechnologies.split(",").map(tech => tech.trim());
 
     // Format the technologies followed by a colon (:) and the skills separated by commas
-    const formattedLine = `${trimmedCategory}: ${techArray.join(", ")}`;
+    const formattedLine = `• ${trimmedCategory}: ${techArray.join(", ")}`;
 
     // Push the formatted line to the array
     formattedSkills.push(formattedLine);
@@ -466,7 +485,7 @@ const formatExperience = (inputText: string) => {
 
   // Iterate over each sentence and add bullet points
   sentences?.forEach((sentence) => {
-    formattedExperience.push(`${sentence.trim()}`);
+    formattedExperience.push(`• ${sentence.trim()}`);
   });
 
   // Join the formatted experience with newlines
@@ -551,6 +570,7 @@ const formatExperience = (inputText: string) => {
                       id="fullname"
                       className="form-control"
                       //style={additionalStyles}
+                      value={defaultFullname}
                       placeholder='Fullname'
                       onChange={(e) => setFullname(e.target.value)} />
                   
@@ -568,6 +588,7 @@ const formatExperience = (inputText: string) => {
               id="linkl"
               //style={additionalStyles}
               placeholder='Links'
+              value={defaultLinksText}
               onChange={(e) => setlinks(extractLinks(e.target.value))} />
               </div>
               </div>
