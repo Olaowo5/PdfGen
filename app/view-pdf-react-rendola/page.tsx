@@ -123,6 +123,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     marginBottom: 3,
+    marginTop: 6,
   },
   workHistoryDetails: {
     marginBottom: 3,
@@ -133,6 +134,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textDecoration: 'underline',
     fontSize: 10,
+    
     //fontFamily: "Nunito",
     
   },
@@ -145,15 +147,17 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
    //fontFamily: 'Lato Italic',
     fontSize: 10,
+    color: '#890b78',
     //: "Nunito",
   },
   role: {
     fontWeight: 'bold',
     fontSize: 10,
+    color: '#092f71',
     //fontFamily: "Nunito",
   },
   exp: {
-    marginTop: 2, // Adjust spacing between work history details and experience
+    marginTop: 4, // Adjust spacing between work history details and experience
     fontSize: 10,
   },
 });
@@ -306,12 +310,30 @@ const PDFCreatorPage = () => {
   const defaultLinks = parseLinks(defaultLinksText);
 
 
+  const extractLinks = (text: string) => {
+    // Regular expression to match labels and URLs
+    const linkRegex = /(\S+)\s*:\s*{(\s*https?:\/\/[^\s{}]+|\s*|\s*)}/g;
+  
+    // Extract labels and URLs from the input text
+    const links: { label: string; url: string }[] = [];
+    let match;
+    while ((match = linkRegex.exec(text)) !== null) {
+      const [, label, url] = match;
+      links.push({ label, url: url.trim() });
+    }
+  
+    console.log(links);
+    return links;
+  };
+
   const [showPdf, setShowPdf] = useState(false);
   const[applicant, setapplicant] = useState("");
-  const [fullname, setFullname] = useState("");
+  const [fullname, setFullname] = useState(defaultFullname);
   const [profession, setProfession] = useState("");
   const [yearsOfExperience, setYearsOfExperience] = useState("");
-  const [links, setlinks] = useState([{label: "", url: ""}]);
+  //const [links, setlinks] = useState([{label: "", url: ""}]);
+  const [links, setlinks] = useState(extractLinks(defaultLinksText));
+
   const [object, setobj] = useState(""); //Objective
   const [skills, setskills] = useState("");
   
@@ -360,21 +382,7 @@ const PDFCreatorPage = () => {
   };
   */
 
-  const extractLinks = (text: string) => {
-    // Regular expression to match labels and URLs
-    const linkRegex = /(\S+)\s*:\s*{(\s*https?:\/\/[^\s{}]+|\s*|\s*)}/g;
-  
-    // Extract labels and URLs from the input text
-    const links: { label: string; url: string }[] = [];
-    let match;
-    while ((match = linkRegex.exec(text)) !== null) {
-      const [, label, url] = match;
-      links.push({ label, url: url.trim() });
-    }
-  
-    console.log(links);
-    return links;
-  };
+ 
 
 
 
