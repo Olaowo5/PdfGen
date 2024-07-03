@@ -329,8 +329,8 @@ const PDFCreatorPage = () => {
   const [showPdf, setShowPdf] = useState(false);
   const[applicant, setapplicant] = useState("");
   const [fullname, setFullname] = useState(defaultFullname);
-  const [profession, setProfession] = useState("");
-  const [yearsOfExperience, setYearsOfExperience] = useState("");
+  //const [profession, setProfession] = useState(""); changed here
+  //const [yearsOfExperience, setYearsOfExperience] = useState(""); chnaged here
   //const [links, setlinks] = useState([{label: "", url: ""}]);
   const [links, setlinks] = useState(extractLinks(defaultLinksText));
 
