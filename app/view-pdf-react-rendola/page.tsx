@@ -309,6 +309,64 @@ const PDFCreatorPage = () => {
   const defaultLinksText = 'LinkedIn:{https://www.linkedin.com/in/olamide-owolabi/} 613-304-5454:{} olamideowolabi:{https://olamideowolabi.com/} adejimiowo2@outlook.com:{} GitHub:{https://github.com/Olaowo5}';
   const defaultLinks = parseLinks(defaultLinksText);
 
+  const infostring = 'Developed a responsive website with backend solutions with ReactJS.\n' +
+  'Completed a comprehensive assignment project involving the development of a database-driven website using Java in the Eclipse IDE.\n' +
+  'Implemented CRUD (Create, Read, Update, Delete) functionality to interact with and manipulate data stored in the database.\n' +
+  'Designed and developed a PHP-based healthcare website enabling appointment scheduling, real-time messaging, and blog functionality to bridge healthcare providers and clients.';
+
+  const infostringii = 'Completed a substantive individual piece of work entitled “The Study of a Dual Active Bridge (DAB) DC-DC Converter for battery charging \n.'+
+                       'Built an autonomous vehicle using a combination of a microprocessor, toy car hub, MATLAB and Visual Studio. \n'+
+                       ' Earned commendations for seeing project to completion, in response to incapacitation of other 2 team members midway through a 3-month schedule.';
+
+
+
+                         //will need to fix here not accepting space or enter has inputs
+const formatExperience = (inputText: string) => {
+
+  // Define the regular expression pattern to match sentences
+  const sentencePattern = /[^.!?\s][^.!?]*(?:[.!?](?!['"]?\s|$)[^.!?]*)*[.!?]?['"]?(?=\s|$)/g;
+
+  // Extract sentences from the text
+  const sentences = inputText.match(sentencePattern);
+
+  // Initialize an empty array to store formatted experience
+  const formattedExperience: string[] = [];
+
+  // Iterate over each sentence and add bullet points
+  sentences?.forEach((sentence) => {
+    formattedExperience.push(`• ${sentence.trim()}`);
+  });
+
+  // Join the formatted experience with newlines
+  const result = formattedExperience.join("\n");
+
+  return result;
+};
+
+
+  const defaultEduEntries: EduHistoryEntry [] = [
+    {
+      program: "Computer Programming",
+      dates: "April 2022 - Dec 2023",
+      schools:"Algonquion College",
+      location: "Ottawa Canada",
+      info: formatExperience(infostring),
+      
+    },
+
+    {
+      program: "Beng Electrical Engineering",
+      dates: "Sept 2013 - Jun 2015",
+      schools: "Newcastle University",
+      location: "Newcastle, United Kingdom",
+      info: formatExperience(infostringii),
+    }
+
+
+  ];
+
+  
+
 
   const extractLinks = (text: string) => {
     // Regular expression to match labels and URLs
@@ -336,10 +394,15 @@ const PDFCreatorPage = () => {
 
   const [object, setobj] = useState(""); //Objective
   const [skills, setskills] = useState("");
-  
+  /*
   const [edu, setedu] = useState([
     {program: "", schools: "", location:"", dates:"", info:""},
   ]);
+  */
+ //will add the default education
+  const [edu, setedu] = useState<EduHistoryEntry[]>(defaultEduEntries);
+
+
   // State for work history entries
   const [workHistory, setWorkHistory] = useState([
     { company: "", dates: "", location: "", role: "", exp: ""},
@@ -479,28 +542,7 @@ const focusStyles = `
   border-color: #007bff; /* Change border color on focus */
 `;
 
-  //will need to fix here not accepting space or enter has inputs
-const formatExperience = (inputText: string) => {
 
-  // Define the regular expression pattern to match sentences
-  const sentencePattern = /[^.!?\s][^.!?]*(?:[.!?](?!['"]?\s|$)[^.!?]*)*[.!?]?['"]?(?=\s|$)/g;
-
-  // Extract sentences from the text
-  const sentences = inputText.match(sentencePattern);
-
-  // Initialize an empty array to store formatted experience
-  const formattedExperience: string[] = [];
-
-  // Iterate over each sentence and add bullet points
-  sentences?.forEach((sentence) => {
-    formattedExperience.push(`• ${sentence.trim()}`);
-  });
-
-  // Join the formatted experience with newlines
-  const result = formattedExperience.join("\n");
-
-  return result;
-};
 
 
 
