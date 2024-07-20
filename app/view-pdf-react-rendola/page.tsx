@@ -319,6 +319,24 @@ const PDFCreatorPage = () => {
                        ' Earned commendations for seeing project to completion, in response to incapacitation of other 2 team members midway through a 3-month schedule.';
 
 
+  const workExpi = 'Developed and maintained client-facing medical billing applications using C# and .NET Core.\n' +
+                    'Built and deployed applications in cloud environments (AWS, Azure, Docker, Kubernetes).\n' +
+                    'Designed and implemented RESTful and SOAP web services for secure data exchange.\n'+
+                    'Conducted unit and integration testing to ensure application reliability and performance.\n' +
+                    'Collaborated with cross-functional teams to gather requirements and deliver high-quality solutions.';
+
+  const workExpii = 'Developed enterprise applications using C#, .NET Core, and MVC architecture.\n' +
+                    'Managed relational databases, including SQL Server and PostgreSQL, ensuring data integrity and performance.\n' +
+                    'Implemented front-end components using JavaScript, HTML, and CSS, ensuring responsive and user-friendly interfaces.\n'+
+                    'Utilized cloud platforms (AWS, GCP) for application deployment and scaling.\n' +
+                    'Ensured application security and compliance with industry standards.';
+
+  const workExpiii = 'Designed and implemented cloud-native applications using C# and .NET Core.\n' +
+                    'Managed and optimized relational databases, ensuring high availability and performance.\n' +
+                    'Conducted comprehensive testing, including unit and integration tests, to ensure software quality.\n'+
+                    'Implemented DevOps practices using GitHub and Jenkins for continuous integration and deployment.\n' +
+                    'Monitored application performance using New Relic and Splunk, addressing issues proactively.';
+
 
                          //will need to fix here not accepting space or enter has inputs
 const formatExperience = (inputText: string) => {
@@ -365,6 +383,33 @@ const formatExperience = (inputText: string) => {
 
   ];
 
+  const defaultWorkExp: WorkHistoryEntry [] =[
+    {
+      company: "Ukemey Inc",
+      dates: "08/2023 – 01/2024",
+      location: "Ottawa/Remote",
+      role: "Senior Full-Stack Developer",
+      exp: formatExperience(workExpi),
+    },
+    {
+      company: "TryCycle Data Systems",
+      dates: "02/2023 – 06/2023",
+      location: "Ottawa",
+      role: "Full-Stack Developer",
+      exp: formatExperience(workExpii),
+    },
+
+    {
+      company: "Reliance Infosystems",
+      dates: "06/2019 - 05/2022",
+      location: "Ottawa/Remote",
+      role: "Cloud Engineer",
+      exp: formatExperience(workExpiii),
+    },
+
+
+  ];
+
   
 
 
@@ -402,12 +447,14 @@ const formatExperience = (inputText: string) => {
  //will add the default education
   const [edu, setedu] = useState<EduHistoryEntry[]>(defaultEduEntries);
 
-
+/*
   // State for work history entries
   const [workHistory, setWorkHistory] = useState([
     { company: "", dates: "", location: "", role: "", exp: ""},
   ]);
+*/
 
+const [workHistory, setWorkHistory] = useState<WorkHistoryEntry[]>(defaultWorkExp);
 
   const handleGeneratePDF = () => {
     if (!fullname  || !links || !object
