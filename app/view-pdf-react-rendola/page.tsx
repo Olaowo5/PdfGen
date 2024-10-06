@@ -318,6 +318,12 @@ const PDFCreatorPage = () => {
                        'Built an autonomous vehicle using a combination of a microprocessor, toy car hub, MATLAB and Visual Studio. \n'+
                        ' Earned commendations for seeing project to completion, in response to incapacitation of other 2 team members midway through a 3-month schedule.';
 
+  const infostringiii = 'Completed a comprehensive project in Unity for UX development, focusing on enhancing user experience and interaction design across multiple applications.\n' +
+                       'Designed and implemented AI NPCs (Non-Player Characters) for interactive applications in Unity, enabling realistic behavior and enhancing user engagement.\n' +
+                       'Created demonstrations of numerous author books, developing intuitive, easy-to-understand Unity-based applications to simplify complex content for a wider audience.\n' +
+                       'Built a database-driven website using Java in Eclipse IDE, incorporating CRUD (Create, Read, Update, Delete) functionality to efficiently manage and manipulate stored data.';
+ 
+
 
   const workExpi = 'Developed and maintained client-facing medical billing applications using C# and .NET Core.\n' +
                     'Built and deployed applications in cloud environments (AWS, Azure, Docker, Kubernetes).\n' +
@@ -336,6 +342,12 @@ const PDFCreatorPage = () => {
                     'Conducted comprehensive testing, including unit and integration tests, to ensure software quality.\n'+
                     'Implemented DevOps practices using GitHub and Jenkins for continuous integration and deployment.\n' +
                     'Monitored application performance using New Relic and Splunk, addressing issues proactively.';
+
+  const workExpiv = 'Migrated legacy CI/CD pipelines from Jenkins to GitHub Actions, streamlining the deployment process and reducing deployment times.\n' +
+                    'Recreated and optimized existing Jenkins functions into GitHub Actions workflows, ensuring smooth and efficient transitions.\n' +
+                    'Set up and configured GitHub Actions workflows for automated builds, tests, and deployments, enhancing operational efficiency and reducing manual intervention.\n'+
+                    'Collaborated with development teams to ensure the successful integration of GitHub Actions, improving deployment speed and consistency.\n' +
+                    'Monitored and troubleshot CI/CD pipelines, ensuring high availability and reliability during the migration process.';                  
 
 
                          //will need to fix here not accepting space or enter has inputs
@@ -373,6 +385,15 @@ const formatExperience = (inputText: string) => {
     },
 
     {
+      program: "Adv Media Study with Computer Science",
+      dates: "Sept 2016 - Aug 2018",
+      schools:"University Of South Carolina",
+      location: "USA",
+      info: formatExperience(infostringiii),
+      
+    },
+
+    {
       program: "Beng Electrical Engineering",
       dates: "Sept 2013 - Jun 2015",
       schools: "Newcastle University",
@@ -384,6 +405,14 @@ const formatExperience = (inputText: string) => {
   ];
 
   const defaultWorkExp: WorkHistoryEntry [] =[
+
+    {
+      company: "Sphere Research Ltd/ Cozmos",
+      dates: "07/2024 – Current",
+      location: "Ottawa/Remote",
+      role: "Devops Engineer",
+      exp: formatExperience(workExpiv),
+    },
     {
       company: "Ukemey Inc",
       dates: "08/2023 – 01/2024",
@@ -667,7 +696,7 @@ const focusStyles = `
                       id="fullname"
                       className="form-control"
                       //style={additionalStyles}
-                      value={defaultFullname}
+                      value={fullname}
                       placeholder='Fullname'
                       onChange={(e) => setFullname(e.target.value)} />
                   
